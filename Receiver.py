@@ -20,7 +20,8 @@ def read_transmitted_data():    # assumes the filename will always be transmitte
 def decrypt_message(ciphertext, iv, aes_key):
     cipher = AES.new(aes_key, AES.MODE_CBC, iv=iv)
     decrypted_message = unpad(cipher.decrypt(ciphertext), AES.block_size)
-    return decrypted_message.decode('utf-8')
+    decrypted_message = decrypted_message.rstrip(b'\0').decode('utf-8')
+    return decrypted_message
 
 def get_mac(ciphertext, iv, mac_key):
     message = iv + ciphertext
